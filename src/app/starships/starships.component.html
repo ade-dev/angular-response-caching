@@ -1,0 +1,65 @@
+<header>
+    <h2>Star Wars Starships</h2> 
+    <div class="view-all-container"><p (click)="getAllStarships()" class="view-all">View all starships <span>></span></p></div>
+</header>
+
+<section>
+    <h3>Search starships by name</h3>
+
+    <form class="search-form">
+        <mat-form-field class="search-form-field" appearance="fill">
+            <mat-label>Enter at least 2 characters</mat-label>
+            <input
+                type="text"
+                aria-label="Search starships"
+                matInput
+                [formControl]="starshipsControl"
+                [matAutocomplete]="starships" />
+            <mat-autocomplete autoActiveFirstOption #starships="matAutocomplete">
+                <mat-option 
+                    *ngFor="let starship of starshipList" 
+                    [value]="starship.name" 
+                    (onSelectionChange)="selectedStarship = starship">
+                    {{starship?.name}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+</section>
+
+<div *ngIf="isLoading" class="is-loading">Loading...</div>
+
+<section class="details-section" *ngIf="selectedStarship">
+    <div>
+        <div>
+            <h3>Starship details</h3>
+            <p>Name: {{selectedStarship.name}}</p>
+            <ul>
+                <li *ngFor="let resident of selectedStarship.pilots;  let ind = index">
+                    <span 
+                        class="view-detais" 
+                        title="View resident's details" 
+                        routerLink="/characters" 
+                        [state]="{'selected': resident}">Pilot {{ind + 1}}
+                    </span>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</section>
+
+<section class="details-section all" *ngIf="showAllStarships  && !selectedStarship">
+    <div>
+        <div>
+            <h3>All starships</h3>
+            <p>Click on a starship to explore it</p>
+            <ul>
+                <li *ngFor="let starship of allStarships;">
+                    <span class="view-detais"  (click)="getStarshipDetails(starship.url)" title="Explore starship">{{starship.name}}</span>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</section>

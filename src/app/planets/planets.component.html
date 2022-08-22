@@ -1,0 +1,66 @@
+<header>
+    <h2>Star Wars Planets</h2> 
+    <div class="view-all-container"><p (click)="getAllPlanets()" class="view-all">View all planets <span>></span></p></div>
+</header>
+
+<section>
+    <h3>Search planets by name</h3>
+
+    <form class="search-form">
+        <mat-form-field class="search-form-field" appearance="fill">
+            <mat-label>Enter at least 2 characters</mat-label>
+            <input
+                type="text"
+                aria-label="Search planets"
+                matInput
+                [formControl]="planetsControl"
+                [matAutocomplete]="planets" />
+            <mat-autocomplete autoActiveFirstOption #planets="matAutocomplete">
+                <mat-option 
+                    *ngFor="let planet of planetList" 
+                    [value]="planet.name" 
+                    (onSelectionChange)="selectedPlanet = planet">
+                    {{planet?.name}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+</section>
+
+<div *ngIf="isLoading" class="is-loading">Loading...</div>
+
+<section class="details-section" *ngIf="selectedPlanet">
+    <div>
+        <div>
+            <h3>Planet details</h3>
+            <p>Name: {{selectedPlanet.name}}</p>
+            <p>Population: {{selectedPlanet.population}}</p>
+            <ul>
+                <li *ngFor="let resident of selectedPlanet.residents;  let ind = index">
+                    <span 
+                        class="view-detais" 
+                        title="View resident's details" 
+                        routerLink="/characters" 
+                        [state]="{'selected': resident}">Resident {{ind + 1}}
+                    </span>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</section>
+
+<section class="details-section all" *ngIf="showAllPlanets  && !selectedPlanet">
+    <div>
+        <div>
+            <h3>All planets</h3>
+            <p>Click on a planet to explore it</p>
+            <ul>
+                <li *ngFor="let planet of allPlanets;">
+                    <span class="view-detais"  (click)="getPlanetDetails(planet.url)" title="Explore planet">{{planet.name}}</span>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</section>

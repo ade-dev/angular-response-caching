@@ -1,6 +1,20 @@
-# StarWars
+# A demo Angular application – App consumes the Star Wars API (SWAPI)
+
+## Developer: Ade Oyebadejo
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3.
+
+## Clone the repo
+
+Run `git clone https://github.com/ade-dev/star-wars.git`
+
+## Navigate to the project folder
+
+`cd star-wars`
+
+## Install dependencies
+
+Run `npm install`
 
 ## Development server
 
