@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StarshipsComponent } from './starships.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MatAutocomplete } from '@angular/material/autocomplete';
+import { MatLegacyAutocomplete as MatAutocomplete } from '@angular/material/legacy-autocomplete';
 
 describe('StarshipsComponent', () => {
   let component: StarshipsComponent;
