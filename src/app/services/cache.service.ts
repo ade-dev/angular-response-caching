@@ -6,19 +6,17 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class CacheService {
 
-  constructor() { }
+  private cacheResponses = new Map<string, HttpResponse<unknown>>();
 
-  private cachedResponses: any = {};
-
-  getResponse(url: string): HttpResponse<any> | undefined {
-    return this.cachedResponses[url];
+  getResponse(requestUrl: string): HttpResponse<unknown> | undefined {
+    return this.cacheResponses.get(requestUrl);
   }
 
-  addResponse(url: string, response: HttpResponse<any>): void {
-    this.cachedResponses[url] = response;
+  addResponse(url: string, response: HttpResponse<unknown>): void {
+    this.cacheResponses.set(url, response);
   }
 
   clearCache(): void {
-    this.cachedResponses = {};
+    this.cacheResponses.clear();
   }
 }

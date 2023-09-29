@@ -2,7 +2,7 @@
 
 ## Developer: Ade Oyebadejo
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3.
+This application is built with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0 and Angular Material version 16.2.5
 
 ## Clone the repo
 

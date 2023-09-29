@@ -5,8 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class HelperService {
 
-  constructor() { }
-
   getId(url: string) {
     const id = url.slice(22);
     return id;

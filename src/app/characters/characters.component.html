@@ -1,6 +1,5 @@
 <header>
     <h2>Star Wars Characters</h2> 
-    <div class="view-all-container"><p (click)="getAllCharacters()" class="view-all">View all characters <span>></span></p></div>
 </header>
 
 <section>
@@ -28,6 +27,10 @@
 </section>
 
 <div *ngIf="isLoading" class="is-loading">Loading...</div>
+
+<div class="view-all-container" *ngIf="!showAllCharacters">
+    <button (click)="getAllCharacters()" class="view-all">View all characters <span>></span></button>
+</div>
 
 <section class="details-section" *ngIf="selectedCharacter">
     <div>
@@ -59,14 +62,14 @@
     </div>
 </section>
 
-<section class="details-section all" *ngIf="showAllCharacters && !selectedCharacter">
+<section class="details-section all" *ngIf="showAllCharacters">
     <div>
         <div>
             <h3>All characters</h3>
             <p>Click on a character to view their details</p>
             <ul>
                 <li *ngFor="let person of allCharacters;">
-                    <span class="view-detais" (click)="getCharacterDetails(person.url)" title="See character details">{{person.name}}</span>
+                    <button class="view-detais" (click)="getCharacterDetails(person.url)" title="See character details">{{person.name}}</button>
                 </li>
             </ul>
 

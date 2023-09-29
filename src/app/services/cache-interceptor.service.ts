@@ -14,7 +14,7 @@ export class CacheInterceptorService implements HttpInterceptor {
     private cacheTimerService: CacheTimerService
   ) { }
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
     this.cacheTimerService.startTimer();
     const countDown = this.cacheTimerService.getCountDown();
@@ -25,14 +25,14 @@ export class CacheInterceptorService implements HttpInterceptor {
     }
 
     if (request.method === 'GET') {
-      const cachedResponse: HttpResponse<any> | undefined = this.cacheService.getResponse(request.url);
+      const cachedResponse = this.cacheService.getResponse(request.url);
 
       if (cachedResponse) {
         return of(cachedResponse);
       }
 
       return next.handle(request).pipe(
-        tap((event: any) => {
+        tap(event => {
           if (event instanceof HttpResponse) {
             this.cacheService.addResponse(request.url, event);
           }

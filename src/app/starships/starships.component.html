@@ -1,6 +1,5 @@
 <header>
     <h2>Star Wars Starships</h2> 
-    <div class="view-all-container"><p (click)="getAllStarships()" class="view-all">View all starships <span>></span></p></div>
 </header>
 
 <section>
@@ -27,6 +26,10 @@
     </form>
 </section>
 
+<div *ngIf="!showAllStarships" class="view-all-container">
+    <button (click)="getAllStarships()" class="view-all">View all starships <span>></span></button>
+</div>
+
 <div *ngIf="isLoading" class="is-loading">Loading...</div>
 
 <section class="details-section" *ngIf="selectedStarship">
@@ -49,14 +52,14 @@
     </div>
 </section>
 
-<section class="details-section all" *ngIf="showAllStarships  && !selectedStarship">
+<section class="details-section all" *ngIf="showAllStarships">
     <div>
         <div>
             <h3>All starships</h3>
             <p>Click on a starship to explore it</p>
             <ul>
                 <li *ngFor="let starship of allStarships;">
-                    <span class="view-detais"  (click)="getStarshipDetails(starship.url)" title="Explore starship">{{starship.name}}</span>
+                    <button class="view-detais"  (click)="getStarshipDetails(starship.url)" title="Explore starship">{{starship.name}}</button>
                 </li>
             </ul>
 
