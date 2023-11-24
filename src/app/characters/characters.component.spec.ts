@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CharactersComponent } from './characters.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MatLegacyAutocomplete as MatAutocomplete } from '@angular/material/legacy-autocomplete';
+import { MatAutocomplete } from '@angular/material/autocomplete';
 
 describe('CharactersComponent', () => {
   let component: CharactersComponent;
@@ -11,8 +10,7 @@ describe('CharactersComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CharactersComponent, MatAutocomplete],
-      imports: [HttpClientTestingModule],
-      schemas: [NO_ERRORS_SCHEMA]
+      imports: [HttpClientTestingModule]
     })
       .compileComponents();
 

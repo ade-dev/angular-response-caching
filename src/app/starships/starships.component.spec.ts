@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StarshipsComponent } from './starships.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MatLegacyAutocomplete as MatAutocomplete } from '@angular/material/legacy-autocomplete';
+import { MatAutocomplete } from '@angular/material/autocomplete';
 
 describe('StarshipsComponent', () => {
   let component: StarshipsComponent;
@@ -11,8 +10,7 @@ describe('StarshipsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [StarshipsComponent, MatAutocomplete],
-      imports: [HttpClientTestingModule],
-      schemas: [NO_ERRORS_SCHEMA]
+      imports: [HttpClientTestingModule]
     })
       .compileComponents();
 
