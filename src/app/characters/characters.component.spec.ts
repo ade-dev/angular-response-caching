@@ -9,10 +9,9 @@ describe('CharactersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CharactersComponent, MatAutocomplete],
-      imports: [HttpClientTestingModule]
-    })
-      .compileComponents();
+      declarations: [MatAutocomplete],
+      imports: [HttpClientTestingModule, CharactersComponent]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CharactersComponent);
     component = fixture.componentInstance;

@@ -1,10 +1,9 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { CharactersComponent } from './characters/characters.component';
 import { PlanetsComponent } from './planets/planets.component';
 import { StarshipsComponent } from './starships/starships.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'characters', component: CharactersComponent
   },
@@ -18,9 +17,3 @@ const routes: Routes = [
     path: '', redirectTo: 'characters', pathMatch: 'full',
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }

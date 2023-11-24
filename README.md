@@ -3,6 +3,7 @@
 ## Developer: Ade Oyebadejo
 
 This application is built with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0 and Angular Material version 16.2.5
+- The project has been updated to Angular and Angular Material versions 17 - Using Node v18.13.0
 
 ## Clone the repo
 

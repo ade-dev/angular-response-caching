@@ -53,7 +53,7 @@ li {
 }
 
 .search-form {
-    min-width: 250px;
+    min-width: 280px;
     max-width: 500px;
     width: auto;
 }
@@ -118,7 +118,7 @@ section>h3 {
 
 .details-section.all li {
     display: inline-block;
-    padding: 0 20px 0 0;
+    padding: 0 30px 0 0;
 }
 
 .details-section.all p {
@@ -169,6 +169,7 @@ button {
     font-size: 14px;
     background: transparent;
     border: none;
+    padding: 0;
 }
 
 /* mat-mdc-form overrides */
@@ -206,8 +207,14 @@ mat-label {
 
 .cdk-overlay-container div.mat-mdc-autocomplete-panel {
     background-color: #333333;
+    padding: 0;
 }
 
 .mat-mdc-option.mdc-list-item {
     color: #a6a6a6;
+    min-height: 42px;
+}
+
+.mat-mdc-option.mdc-list-item:not(:last-child) {
+    border-bottom: 1px solid #666666;
 }

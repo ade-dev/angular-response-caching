@@ -59,3 +59,5 @@ export interface Starship {
     starship_class: string;
     url: string;
 }
+
+export type Stage = Person | Planet | Starship;

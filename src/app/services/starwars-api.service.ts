@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, expand, reduce, EMPTY } from 'rxjs';
-import { Swapi, Person, Planet, Starship } from '../models/swapi';
+import { Observable, expand, reduce, EMPTY, map } from 'rxjs';
+import { Swapi, Stage, Person, Planet, Starship } from '../models/swapi';
 
 
 @Injectable({
@@ -25,7 +25,7 @@ export class StarwarsApiService {
     return this.httpClient.get<T>(getUrl);
   }
 
-  getAllResources<T extends Person | Planet | Starship>(endPoint: string): Observable<T[]> {
+  getAllResources<T extends Stage>(endPoint: string): Observable<T[]> {
     const getAllUrl = `${this.baseUrl}${endPoint}`;
     return this.httpClient.get<Swapi>(getAllUrl).pipe(
       expand((response) =>
@@ -33,6 +33,13 @@ export class StarwarsApiService {
         // And limiting response to 3 pages
         response.next && response.next.slice(-1) !== '4' ? this.httpClient.get<Swapi>(response.next) : EMPTY),
       reduce((acc: T[], { results }) => acc.concat(results as T[]), [])
+    );
+  }
+
+  getResources(endPoint: string): Observable<Person[] | Planet[] | Starship[]> {
+    const getAllUrl = `${this.baseUrl}${endPoint}`;
+    return this.httpClient.get<Swapi>(getAllUrl).pipe(
+      map((response) => response.results)
     );
   }
 }

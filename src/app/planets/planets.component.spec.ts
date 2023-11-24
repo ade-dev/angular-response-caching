@@ -9,10 +9,9 @@ describe('PlanetsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PlanetsComponent, MatAutocomplete],
-      imports: [HttpClientTestingModule]
-    })
-      .compileComponents();
+      declarations: [MatAutocomplete],
+      imports: [HttpClientTestingModule, PlanetsComponent]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PlanetsComponent);
     component = fixture.componentInstance;

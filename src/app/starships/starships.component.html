@@ -1,68 +1,56 @@
 <header>
-    <h2>Star Wars Starships</h2> 
+    <h2>Star Wars Starships</h2>
 </header>
 
 <section>
     <h3>Search starships by name</h3>
-
-    <form class="search-form">
-        <mat-form-field class="search-form-field" appearance="fill">
-            <mat-label>Enter at least 2 characters</mat-label>
-            <input
-                type="text"
-                aria-label="Search starships"
-                matInput
-                [formControl]="starshipsControl"
-                [matAutocomplete]="starships" />
-            <mat-autocomplete autoActiveFirstOption #starships="matAutocomplete">
-                <mat-option 
-                    *ngFor="let starship of starshipList" 
-                    [value]="starship.name" 
-                    (onSelectionChange)="selectedStarship = starship">
-                    {{starship?.name}}
-                </mat-option>
-            </mat-autocomplete>
-        </mat-form-field>
-    </form>
+    <app-search-form [apiType]="'starships'" (selectedItemEvent)="getSelectedStarship($event)"></app-search-form>
 </section>
 
-<div *ngIf="!showAllStarships" class="view-all-container">
-    <button (click)="getAllStarships()" class="view-all">View all starships <span>></span></button>
+<div class="view-all-container" *ngIf="!showAllStarships || selectedStarship">
+    <button (click)="getStarships()" class="view-all">View all starships <span>></span></button>
 </div>
 
-<div *ngIf="isLoading" class="is-loading">Loading...</div>
+<section class="details-section all" *ngIf="showAllStarships && !selectedStarship">
+    <div>
+        <div>
+            <h3>Starships</h3>
+            @if (!isLoading){
+            <p>Click on a starship to explore it</p>
+            <ul>
+                <li *ngFor="let starship of allStarships;">
+                    <button class="view-detais" (click)="getStarshipDetails(starship.url)"
+                        title="Explore starship">{{starship.name}}</button>
+                </li>
+            </ul>
+            }
+            @else {
+            <div class="is-loading">Loading...</div>
+            }
+        </div>
+    </div>
+</section>
 
 <section class="details-section" *ngIf="selectedStarship">
     <div>
         <div>
             <h3>Starship details</h3>
+            @if (!isLoading){
             <p>Name: {{selectedStarship.name}}</p>
             <ul>
                 <li *ngFor="let resident of selectedStarship.pilots;  let ind = index">
-                    <span 
-                        class="view-detais" 
-                        title="View resident's details" 
-                        routerLink="/characters" 
+                    <span
+                        class="view-detais"
+                        title="View resident's details"
+                        routerLink="/characters"
                         [state]="{'selected': resident}">Pilot {{ind + 1}}
                     </span>
                 </li>
             </ul>
-
-        </div>
-    </div>
-</section>
-
-<section class="details-section all" *ngIf="showAllStarships">
-    <div>
-        <div>
-            <h3>All starships</h3>
-            <p>Click on a starship to explore it</p>
-            <ul>
-                <li *ngFor="let starship of allStarships;">
-                    <button class="view-detais"  (click)="getStarshipDetails(starship.url)" title="Explore starship">{{starship.name}}</button>
-                </li>
-            </ul>
-
+            }
+            @else {
+            <div class="is-loading">Loading...</div>
+            }
         </div>
     </div>
 </section>

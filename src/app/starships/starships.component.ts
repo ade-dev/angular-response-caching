@@ -1,12 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { debounceTime, switchMap, distinctUntilChanged, filter, Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 import { StarwarsApiService } from '../services/starwars-api.service';
-import { Starship } from '../models/swapi';
+import { SearchFormComponent } from '../search-form/search-form.component';
+import { Stage, Starship } from '../models/swapi';
 import { HelperService } from '../services/helper.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-starships',
+  standalone: true,
+  imports: [CommonModule, RouterLink, SearchFormComponent],
   templateUrl: './starships.component.html',
   styleUrls: ['./starships.component.css']
 })
@@ -17,11 +21,8 @@ export class StarshipsComponent implements OnInit, OnDestroy {
     private helperService: HelperService
   ) { }
 
-  subsribeSearchStarships!: Subscription;
   subsribeGetStarships!: Subscription;
-  subsribeGetAllStarships!: Subscription;
-  starshipsControl = new FormControl<string>('');
-  minimumStarships = 2;
+  subsribeGetStarship!: Subscription;
   starshipList: Starship[] = [];
   allStarships: Starship[] = [];
   selectedStarship: Starship | null = null;
@@ -30,18 +31,19 @@ export class StarshipsComponent implements OnInit, OnDestroy {
   isLoading = false;
 
   getStarship(endPoint: string) {
-    this.subsribeGetStarships = this.starwarsApiService.getSpecificResource<Starship>(endPoint).subscribe((response: Starship) => {
-      this.selectedStarship = response;
+    this.subsribeGetStarship = this.starwarsApiService.getSpecificResource<Starship>(endPoint).subscribe((response: Starship) => {
+      this.isLoading = false;
       this.showAllStarships = false;
+      this.selectedStarship = response;
     });
   }
 
-  getAllStarships() {
+  getStarships() {
     this.showAllStarships = true;
     this.isLoading = true;
-    this.subsribeGetAllStarships = this.starwarsApiService.getAllResources<Starship>('starships/').subscribe((response: Starship[]) => {
-      this.allStarships = response;
+    this.subsribeGetStarships = this.starwarsApiService.getResources('starships/').subscribe((response) => {
       this.isLoading = false;
+      this.allStarships = response as Starship[];
       this.selectedStarship = null;
     });
   }
@@ -52,30 +54,17 @@ export class StarshipsComponent implements OnInit, OnDestroy {
     this.showAllStarships = false;
   }
 
-  searchStarships() {
-    this.subsribeSearchStarships = this.starshipsControl.valueChanges.pipe(
-      filter(value => {
-        return value !== null && value.trim() !== '' && value.trim().length >= this.minimumStarships;
-      }),
-      distinctUntilChanged(),
-      debounceTime(1000),
-      switchMap(value => this.starwarsApiService.searchResources('starships', value))
-    )
-      .subscribe(
-        response => {
-          response.count === 0 ? this.starshipList = [] : this.starshipList = response.results as Starship[];
-        });
+  getSelectedStarship(item: Stage) {
+    this.selectedStarship = item as Starship;
   }
 
   ngOnInit(): void {
-    this.getAllStarships();
-    this.searchStarships();
+    this.getStarships();
     history.state && history.state.selected ? this.getStarshipDetails(history.state.selected) : '';
   }
 
   ngOnDestroy() {
-    this.subsribeSearchStarships?.unsubscribe();
     this.subsribeGetStarships?.unsubscribe();
-    this.subsribeGetAllStarships?.unsubscribe();
+    this.subsribeGetStarship?.unsubscribe();
   }
 }

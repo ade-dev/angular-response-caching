@@ -1,12 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { debounceTime, switchMap, distinctUntilChanged, filter, Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 import { StarwarsApiService } from '../services/starwars-api.service';
+import { SearchFormComponent } from '../search-form/search-form.component';
 import { HelperService } from '../services/helper.service';
-import { Planet, Person } from '../models/swapi';
+import { Stage, Planet, Person } from '../models/swapi';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-characters',
+  standalone: true,
+  imports: [CommonModule, RouterLink, SearchFormComponent],
   templateUrl: './characters.component.html',
   styleUrls: ['./characters.component.css']
 })
@@ -17,12 +21,8 @@ export class CharactersComponent implements OnInit, OnDestroy {
     private helperService: HelperService
   ) { }
 
-  subsribeSearchCharacters!: Subscription;
   subsribeGetCharacters!: Subscription;
-  subsribeGetAllCharacters!: Subscription;
-  charactersControl = new FormControl<string | null>(null);
-  minimumCharacters = 2;
-  characterList: Person[] = [];
+  subsribeGetCharacter!: Subscription;
   allCharacters!: Person[];
   selectedCharacter: Person | null = null;
   selectedPlanetName = '';
@@ -31,8 +31,9 @@ export class CharactersComponent implements OnInit, OnDestroy {
 
   getCharacterPlanet(endPoint: string) {
     this.subsribeGetCharacters = this.starwarsApiService.getSpecificResource<Planet>(endPoint).subscribe((response: Planet) => {
-      this.selectedPlanetName = response.name;
+      this.isLoading = false;
       this.showAllCharacters = false;
+      this.selectedPlanetName = response.name;
     });
   }
 
@@ -41,58 +42,37 @@ export class CharactersComponent implements OnInit, OnDestroy {
       this.selectedCharacter = response;
       const planetId = this.helperService.getId(this.selectedCharacter?.homeworld);
       this.getCharacterPlanet(planetId);
-      this.showAllCharacters = false;
     });
   }
 
-  getAllCharacters() {
+  getCharacters() {
     this.showAllCharacters = true;
     this.isLoading = true;
-    this.subsribeGetAllCharacters = this.starwarsApiService.getAllResources<Person>('people/').subscribe((response: Person[]) => {
-      this.allCharacters = response;
+    this.subsribeGetCharacter = this.starwarsApiService.getResources('people/').subscribe((response) => {
       this.isLoading = false;
+      this.allCharacters = response as Person[];
       this.selectedCharacter = null;
     });
   }
 
-  mapCharacterDetails(selectedPerson: Person) {
-    this.selectedCharacter = selectedPerson;
-    const planetId = this.helperService.getId(this.selectedCharacter.homeworld);
-    this.getCharacterPlanet(planetId);
-    this.showAllCharacters = false;
-  }
-
   getCharacterDetails(selectedPerson: string) {
     this.showAllCharacters = false;
+    this.isLoading = true;
     const characterId = this.helperService.getId(selectedPerson);
     this.getCharacter(characterId);
   }
 
-  searchCharacters() {
-    this.subsribeSearchCharacters = this.charactersControl.valueChanges.pipe(
-      filter(value => {
-        return value !== null && value.trim() !== '' && value.trim().length >= this.minimumCharacters;
-      }),
-      distinctUntilChanged(),
-      debounceTime(1000),
-      switchMap(value => this.starwarsApiService.searchResources('people', value))
-    )
-      .subscribe(
-        response => {
-          response.count === 0 ? this.characterList = [] : this.characterList = response.results as Person[];
-        }
-      );
+  getSelectedCharacter(item: Stage) {
+    this.selectedCharacter = item as Person;
   }
 
   ngOnInit(): void {
-    this.getAllCharacters();
-    this.searchCharacters();
+    this.getCharacters();
     history.state && history.state.selected ? this.getCharacterDetails(history.state.selected) : '';
   }
 
   ngOnDestroy() {
-    this.subsribeSearchCharacters?.unsubscribe();
     this.subsribeGetCharacters?.unsubscribe();
-    this.subsribeGetAllCharacters?.unsubscribe();
+    this.subsribeGetCharacter?.unsubscribe();
   }
 }
