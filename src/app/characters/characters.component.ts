@@ -1,9 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subscription } from 'rxjs';
 import { StarwarsApiService } from '../services/starwars-api.service';
 import { SearchFormComponent } from '../search-form/search-form.component';
-import { HelperService } from '../services/helper.service';
 import { Stage, Planet, Person } from '../models/swapi';
 import { RouterLink } from '@angular/router';
 
@@ -14,41 +12,37 @@ import { RouterLink } from '@angular/router';
   templateUrl: './characters.component.html',
   styleUrls: ['./characters.component.css']
 })
-export class CharactersComponent implements OnInit, OnDestroy {
+export class CharactersComponent implements OnInit {
 
   constructor(
-    private starwarsApiService: StarwarsApiService,
-    private helperService: HelperService
+    private starwarsApiService: StarwarsApiService
   ) { }
 
-  subsribeGetCharacters!: Subscription;
-  subsribeGetCharacter!: Subscription;
   allCharacters!: Person[];
   selectedCharacter: Person | null = null;
   selectedPlanetName = '';
   showAllCharacters = false;
   isLoading = false;
 
-  getCharacterPlanet(endPoint: string) {
-    this.subsribeGetCharacters = this.starwarsApiService.getSpecificResource<Planet>(endPoint).subscribe((response: Planet) => {
+  getCharacterPlanet(url: string) {
+    this.starwarsApiService.getResource<Planet>(url).subscribe((response: Planet) => {
       this.isLoading = false;
       this.showAllCharacters = false;
       this.selectedPlanetName = response.name;
     });
   }
 
-  getCharacter(endPoint: string) {
-    this.subsribeGetCharacters = this.starwarsApiService.getSpecificResource<Person>(endPoint).subscribe((response: Person) => {
+  getCharacter(url: string) {
+    this.starwarsApiService.getResource<Person>(url).subscribe((response: Person) => {
       this.selectedCharacter = response;
-      const planetId = this.helperService.getId(this.selectedCharacter?.homeworld);
-      this.getCharacterPlanet(planetId);
+      this.getCharacterPlanet(this.selectedCharacter?.homeworld);
     });
   }
 
   getCharacters() {
     this.showAllCharacters = true;
     this.isLoading = true;
-    this.subsribeGetCharacter = this.starwarsApiService.getResources('people/').subscribe((response) => {
+    this.starwarsApiService.getResources('people/').subscribe((response) => {
       this.isLoading = false;
       this.allCharacters = response as Person[];
       this.selectedCharacter = null;
@@ -58,21 +52,15 @@ export class CharactersComponent implements OnInit, OnDestroy {
   getCharacterDetails(selectedPerson: string) {
     this.showAllCharacters = false;
     this.isLoading = true;
-    const characterId = this.helperService.getId(selectedPerson);
-    this.getCharacter(characterId);
+    this.getCharacter(selectedPerson);
   }
 
   getSelectedCharacter(item: Stage) {
-    this.selectedCharacter = item as Person;
+    const selectedCharacter = item as Person;
+    this.getCharacterDetails(selectedCharacter.url);
   }
 
   ngOnInit(): void {
-    this.getCharacters();
-    history.state && history.state.selected ? this.getCharacterDetails(history.state.selected) : '';
-  }
-
-  ngOnDestroy() {
-    this.subsribeGetCharacters?.unsubscribe();
-    this.subsribeGetCharacter?.unsubscribe();
+    history.state && history.state.selected ? this.getCharacterDetails(history.state.selected) : this.getCharacters();
   }
 }

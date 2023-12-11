@@ -13,16 +13,15 @@ export class StarwarsApiService {
     private httpClient: HttpClient
   ) { }
 
-  private baseUrl = 'https://swapi.dev/api/';
+  public baseUrl = 'https://swapi.dev/api/';
 
   searchResources(group: string, endPoint: string | null): Observable<Swapi> {
-    const searchUrl = `${this.baseUrl}${group}/?search=${endPoint}`;
+    const searchUrl = `${this.baseUrl}${group}?search=${endPoint}`;
     return this.httpClient.get<Swapi>(searchUrl);
   }
 
-  getSpecificResource<T>(endPoint: string): Observable<T> {
-    const getUrl = `${this.baseUrl}/${endPoint}`;
-    return this.httpClient.get<T>(getUrl);
+  getResource<T>(resourceUrl: string): Observable<T> {
+    return this.httpClient.get<T>(resourceUrl);
   }
 
   getAllResources<T extends Stage>(endPoint: string): Observable<T[]> {

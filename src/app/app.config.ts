@@ -2,7 +2,7 @@ import { ApplicationConfig } from '@angular/core';
 import { routes } from './app.routes';
 import { provideHttpClient, withFetch, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { CacheInterceptorService } from './services/cache-interceptor.service';
+import { HttpInterceptorService } from './services/http-interceptor.service';
 
 import { provideRouter } from '@angular/router';
 
@@ -14,7 +14,7 @@ export const appConfig: ApplicationConfig = {
         provideAnimations(),
         {
             provide: HTTP_INTERCEPTORS,
-            useClass: CacheInterceptorService,
+            useClass: HttpInterceptorService,
             multi: true
         }
     ]

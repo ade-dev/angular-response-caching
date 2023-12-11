@@ -6,7 +6,7 @@
             aria-label="Search characters"
             matInput
             [formControl]="searchInput"
-            [matAutocomplete]="characters" />
+            [matAutocomplete]="characters" data-cy="searchInput" />
 
         <mat-autocomplete autoActiveFirstOption #characters="matAutocomplete">
             <mat-option *ngIf="searchService.isLoading && searchInput.value !==''">Loading...</mat-option>

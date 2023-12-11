@@ -1,56 +1,61 @@
-<header>
-    <h2>Star Wars Starships</h2>
-</header>
+<div data-cy="starships">
 
-<section>
-    <h3>Search starships by name</h3>
-    <app-search-form [apiType]="'starships'" (selectedItemEvent)="getSelectedStarship($event)"></app-search-form>
-</section>
+    <header>
+        <h2>Star Wars Starships</h2>
+    </header>
 
-<div class="view-all-container" *ngIf="!showAllStarships || selectedStarship">
-    <button (click)="getStarships()" class="view-all">View all starships <span>></span></button>
+    <section data-cy="searchView">
+        <h3>Search starships by name</h3>
+        <app-search-form [apiType]="'starships'" (selectedItemEvent)="getSelectedStarship($event)"></app-search-form>
+    </section>
+
+    <div class="view-all-container" *ngIf="!showAllStarships || selectedStarship">
+        <button (click)="getStarships()" class="view-all">View all starships <span>></span></button>
+    </div>
+
+    <section class="details-section all" *ngIf="showAllStarships && !selectedStarship" data-cy="listView">
+        <div>
+            <div>
+                <h3>Starships</h3>
+                @if (!isLoading){
+                <p>Click on a starship to explore it</p>
+                <ul>
+                    <li *ngFor="let starship of allStarships;">
+                        <button class="view-detais" (click)="getStarshipDetails(starship.url)"
+                            title="Explore starship">{{starship.name}}</button>
+                    </li>
+                </ul>
+                }
+                @else {
+                <div class="is-loading">Loading...</div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <section class="details-section" *ngIf="selectedStarship" data-cy="detailsView">
+        <div>
+            <div>
+                <h3>Starship details</h3>
+                @if (!isLoading){
+                <p>Name: {{selectedStarship.name}}</p>
+                <p>Model: {{selectedStarship.model}}</p>
+                <ul>
+                    <li *ngFor="let resident of selectedStarship.pilots;  let ind = index">
+                        <span
+                            class="view-detais"
+                            title="View resident's details"
+                            routerLink="/characters"
+                            [state]="{'selected': resident}">Pilot {{ind + 1}}
+                        </span>
+                    </li>
+                </ul>
+                }
+                @else {
+                <div class="is-loading">Loading...</div>
+                }
+            </div>
+        </div>
+    </section>
+
 </div>
-
-<section class="details-section all" *ngIf="showAllStarships && !selectedStarship">
-    <div>
-        <div>
-            <h3>Starships</h3>
-            @if (!isLoading){
-            <p>Click on a starship to explore it</p>
-            <ul>
-                <li *ngFor="let starship of allStarships;">
-                    <button class="view-detais" (click)="getStarshipDetails(starship.url)"
-                        title="Explore starship">{{starship.name}}</button>
-                </li>
-            </ul>
-            }
-            @else {
-            <div class="is-loading">Loading...</div>
-            }
-        </div>
-    </div>
-</section>
-
-<section class="details-section" *ngIf="selectedStarship">
-    <div>
-        <div>
-            <h3>Starship details</h3>
-            @if (!isLoading){
-            <p>Name: {{selectedStarship.name}}</p>
-            <ul>
-                <li *ngFor="let resident of selectedStarship.pilots;  let ind = index">
-                    <span
-                        class="view-detais"
-                        title="View resident's details"
-                        routerLink="/characters"
-                        [state]="{'selected': resident}">Pilot {{ind + 1}}
-                    </span>
-                </li>
-            </ul>
-            }
-            @else {
-            <div class="is-loading">Loading...</div>
-            }
-        </div>
-    </div>
-</section>

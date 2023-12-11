@@ -218,3 +218,8 @@ mat-label {
 .mat-mdc-option.mdc-list-item:not(:last-child) {
     border-bottom: 1px solid #666666;
 }
+
+.mat-mdc-autocomplete-visible .mat-mdc-option.mdc-list-item--disabled .mdc-list-item__primary-text {
+    color: #a6a6a6;
+    opacity: 1;
+}

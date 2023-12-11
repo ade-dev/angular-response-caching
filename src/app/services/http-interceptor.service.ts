@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { CacheService } from './cache.service';
-import { CacheTimerService } from '../services/cache-timer.service';
+import { CacheTimerService } from './cache-timer.service';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CacheInterceptorService implements HttpInterceptor {
+export class HttpInterceptorService implements HttpInterceptor {
 
   constructor(
-    private cacheService: CacheService,
+    public cacheService: CacheService,
     private cacheTimerService: CacheTimerService
   ) { }
 
@@ -25,7 +25,7 @@ export class CacheInterceptorService implements HttpInterceptor {
     }
 
     if (request.method === 'GET') {
-      const cachedResponse = this.cacheService.getResponse(request.url);
+      const cachedResponse = this.cacheService.checkResponse(request.url);
 
       if (cachedResponse) {
         return of(cachedResponse);
