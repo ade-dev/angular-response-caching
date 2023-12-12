@@ -1,6 +1,8 @@
 # A demo Angular application – App consumes the Star Wars API (SWAPI)
 
-## Developer: Ade Oyebadejo
+## Developer: [Ade Oyebadejo](https://www.clade.co.uk)
+
+A demo Angular application which consumes a Star Wars API (SWAPI) to present dashboards and search functionalities for characters, planets and spaceships. Unit tests are implemented using Jasmine and Karma with E2E tests executed via Cypress
 
 This application is built with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0 and Angular Material version 16.2.5
 - The project has been updated to Angular and Angular Material versions 17 - Using Node v18.13.0
@@ -31,11 +33,11 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `ng test` to execute unit tests via [Karma](https://karma-runner.github.io).
 
 ## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Run `ng e2e` to execute end-to-end tests via Cypress.
 
 ## Further help
 

@@ -1,0 +1,30 @@
+{
+    "pageTitle": "Star Wars Starships",
+    "listHeading": "Starships",
+    "detailsHeading": "Starship details",
+    "list": [
+        {
+            "name": "Millennium Falcon",
+            "keyA": "YT-1300 light freighter",
+            "keyB": [
+                "Pilot 1",
+                "Pilot 2"
+            ]
+        },
+        {
+            "name": "Imperial shuttle",
+            "keyA": "Lambda-class T-4a shuttle",
+            "keyB": [
+                "Pilot 1",
+                "Pilot 2"
+            ]
+        },
+        {
+            "name": "Death Star"
+        }
+    ],
+    "selectedProperty": {
+        "screen": "characters",
+        "name": "Name: Chewbacca"
+    }
+}

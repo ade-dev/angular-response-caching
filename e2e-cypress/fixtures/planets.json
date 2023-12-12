@@ -1,0 +1,30 @@
+{
+    "pageTitle": "Star Wars Planets",
+    "listHeading": "Planets",
+    "detailsHeading": "Planet details",
+    "list": [
+        {
+            "name": "Alderaan",
+            "keyA": "2000000000",
+            "keyB": [
+                "Resident 1",
+                "Resident 2"
+            ]
+        },
+        {
+            "name": "Corellia",
+            "keyA": "3000000000",
+            "keyB": [
+                "Resident 1",
+                "Resident 2"
+            ]
+        },
+        {
+            "name": "Coruscant"
+        }
+    ],
+    "selectedProperty": {
+        "screen": "characters",
+        "name": "Name: Leia Organa"
+    }
+}

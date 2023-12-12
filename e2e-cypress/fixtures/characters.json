@@ -1,0 +1,30 @@
+{
+    "pageTitle": "Star Wars Characters",
+    "listHeading": "Characters",
+    "detailsHeading": "Character details",
+    "list": [
+        {
+            "name": "Luke Skywalker",
+            "keyA": "Tatooine",
+            "keyB": [
+                "Starship 1",
+                "Starship 2"
+            ]
+        },
+        {
+            "name": "Han Solo",
+            "keyA": "Corellia",
+            "keyB": [
+                "Starship 1",
+                "Starship 2"
+            ]
+        },
+        {
+            "name": "Beru Whitesun lars"
+        }
+    ],
+    "selectedProperty": {
+        "screen": "starships",
+        "name": "Name: X-wing"
+    }
+}
