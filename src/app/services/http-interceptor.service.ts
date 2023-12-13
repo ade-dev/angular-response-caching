@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CacheService } from './cache.service';
+import { CacheStoreService } from './cache-store.service';
 import { CacheTimerService } from './cache-timer.service';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable, of, tap } from 'rxjs';
@@ -10,7 +10,7 @@ import { Observable, of, tap } from 'rxjs';
 export class HttpInterceptorService implements HttpInterceptor {
 
   constructor(
-    public cacheService: CacheService,
+    public cacheStoreService: CacheStoreService,
     private cacheTimerService: CacheTimerService
   ) { }
 
@@ -21,11 +21,11 @@ export class HttpInterceptorService implements HttpInterceptor {
 
     if (countDown <= 0) {
       this.cacheTimerService.resetTimer();
-      this.cacheService.clearCache();
+      this.cacheStoreService.clearCache();
     }
 
     if (request.method === 'GET') {
-      const cachedResponse = this.cacheService.checkResponse(request.url);
+      const cachedResponse = this.cacheStoreService.checkResponse(request.url);
 
       if (cachedResponse) {
         return of(cachedResponse);
@@ -34,7 +34,7 @@ export class HttpInterceptorService implements HttpInterceptor {
       return next.handle(request).pipe(
         tap(event => {
           if (event instanceof HttpResponse) {
-            this.cacheService.addResponse(request.url, event);
+            this.cacheStoreService.addResponse(request.url, event);
           }
         })
       );

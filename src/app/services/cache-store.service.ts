@@ -4,7 +4,7 @@ import { HttpResponse } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class CacheService {
+export class CacheStoreService {
 
   public cachedResponses = new Map<string, HttpResponse<unknown>>();
 

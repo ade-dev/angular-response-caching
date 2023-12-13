@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { CacheService } from './cache.service';
+import { CacheStoreService } from './cache-store.service';
 import { HttpResponse } from '@angular/common/http';
 interface TestData {
   name: string;
@@ -7,8 +7,8 @@ interface TestData {
 
 const testUrl = '/data';
 
-describe('CacheService', () => {
-  let cacheService: CacheService;
+describe('Cached object service', () => {
+  let cachedObjectService: CacheStoreService;
   const testData: TestData = { name: 'Test Data' };
 
   const testResponse = new HttpResponse({
@@ -19,26 +19,26 @@ describe('CacheService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    cacheService = TestBed.inject(CacheService);
+    cachedObjectService = TestBed.inject(CacheStoreService);
 
-    cacheService.addResponse(testUrl, testResponse);
+    cachedObjectService.addResponse(testUrl, testResponse);
   });
 
   it('should be created', () => {
-    expect(cacheService).toBeTruthy();
+    expect(cachedObjectService).toBeTruthy();
   });
 
   it(`should have added response to 'cachedResponses' object`, () => {
-    expect(cacheService.cachedResponses.size).toBe(1);
+    expect(cachedObjectService.cachedResponses.size).toBe(1);
   });
 
   it(`should clear 'cachedResponses' object`, () => {
-    cacheService.clearCache();
-    expect(cacheService.cachedResponses.size).toBe(0);
+    cachedObjectService.clearCache();
+    expect(cachedObjectService.cachedResponses.size).toBe(0);
   });
 
   it(`should check for response in 'cachedResponses' object`, () => {
-    cacheService.checkResponse(testUrl);
-    expect(cacheService.cachedResponses.has(testUrl)).toBe(true);
+    cachedObjectService.checkResponse(testUrl);
+    expect(cachedObjectService.cachedResponses.has(testUrl)).toBe(true);
   });
 });

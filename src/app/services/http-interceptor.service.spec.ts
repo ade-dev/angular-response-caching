@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { StarwarsApiService } from './starwars-api.service';
 import { HttpInterceptorService } from './http-interceptor.service';
-import { CacheService } from './cache.service';
+import { CacheStoreService } from './cache-store.service';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Person } from '../models/swapi';
@@ -9,7 +9,7 @@ import { Person } from '../models/swapi';
 describe('CacheInterceptorService', () => {
   let starwarsApiService: StarwarsApiService;
   let httpInterceptorService: HttpInterceptorService;
-  let cacheService: CacheService;
+  let cacheStoreService: CacheStoreService;
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
@@ -29,7 +29,7 @@ describe('CacheInterceptorService', () => {
     httpTestingController = TestBed.inject(HttpTestingController);
     starwarsApiService = TestBed.inject(StarwarsApiService);
     httpInterceptorService = TestBed.inject(HttpInterceptorService);
-    cacheService = TestBed.inject(CacheService);
+    cacheStoreService = TestBed.inject(CacheStoreService);
   });
 
   afterEach(() => {
@@ -79,8 +79,8 @@ describe('CacheInterceptorService', () => {
     testRequest.flush(testCharacter);
 
     expect(testRequest.request.method).toEqual('GET');
-    expect(cacheService.cachedResponses.size).toBe(1);
-    expect(cacheService.cachedResponses.has(apiUrl)).toBe(true);
+    expect(cacheStoreService.cachedResponses.size).toBe(1);
+    expect(cacheStoreService.cachedResponses.has(apiUrl)).toBe(true);
   });
 
 });
