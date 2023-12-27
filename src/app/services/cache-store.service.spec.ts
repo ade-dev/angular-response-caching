@@ -7,7 +7,7 @@ interface TestData {
 
 const testUrl = '/data';
 
-describe('Cached object service', () => {
+describe('CacheStoreService', () => {
   let cachedObjectService: CacheStoreService;
   const testData: TestData = { name: 'Test Data' };
 
@@ -17,11 +17,13 @@ describe('Cached object service', () => {
     body: testData,
   });
 
+  const timestamp = new Date();
+
   beforeEach(() => {
     TestBed.configureTestingModule({});
     cachedObjectService = TestBed.inject(CacheStoreService);
 
-    cachedObjectService.addResponse(testUrl, testResponse);
+    cachedObjectService.addResponse(testUrl, testResponse, timestamp);
   });
 
   it('should be created', () => {
@@ -33,12 +35,12 @@ describe('Cached object service', () => {
   });
 
   it(`should clear 'cachedResponses' object`, () => {
-    cachedObjectService.clearCache();
+    cachedObjectService.clearResponse(testUrl);
     expect(cachedObjectService.cachedResponses.size).toBe(0);
   });
 
   it(`should check for response in 'cachedResponses' object`, () => {
-    cachedObjectService.checkResponse(testUrl);
+    cachedObjectService.getResponse(testUrl);
     expect(cachedObjectService.cachedResponses.has(testUrl)).toBe(true);
   });
 });

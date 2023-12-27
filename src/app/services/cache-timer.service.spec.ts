@@ -13,10 +13,13 @@ describe('CacheTimerService', () => {
     expect(cacheTimerService).toBeTruthy();
   });
 
-  it('should create countdown of 30 minutes', () => {
-    cacheTimerService.startTimer();
-    const countDown = cacheTimerService.getCountDown();
-
-    expect(countDown).toBeDefined();
+  it('should return timestamp', () => {
+    const timestamp = cacheTimerService.setTimestamp();
+    expect(timestamp).toBeDefined();
+  });
+  it('should check expiry', () => {
+    const timestamp = new Date();
+    const isExpired = cacheTimerService.isExpired(timestamp);
+    expect(isExpired).toBeFalse();
   });
 });

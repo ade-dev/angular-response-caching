@@ -5,22 +5,16 @@ import { Injectable } from '@angular/core';
 })
 export class CacheTimerService {
 
-  private isTimerStarted = false;
-  private expiryTime: Date = new Date();
+  durationInMins = 60;
 
-  startTimer(): void {
-    const timerDuration = 30;
-    if (!this.isTimerStarted) {
-      this.expiryTime.setMinutes(this.expiryTime.getMinutes() + timerDuration);
-      this.isTimerStarted = true;
-    }
+  setTimestamp(): Date {
+    return new Date();
   }
 
-  resetTimer(): void {
-    this.isTimerStarted = false;
-  }
-
-  getCountDown(): number {
-    return this.expiryTime.getTime() - new Date().getTime();
+  isExpired(timestamp: Date): boolean {
+    const timeNow = new Date().getTime();
+    const durationInMillis = this.durationInMins * 60 * 1000;
+    const expiryTime = timestamp.getTime() + durationInMillis;
+    return (expiryTime > timeNow) ? false : true;
   }
 }

@@ -6,17 +6,17 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class CacheStoreService {
 
-  public cachedResponses = new Map<string, HttpResponse<unknown>>();
+  cachedResponses = new Map<string, [HttpResponse<unknown>, Date]>();
 
-  checkResponse(requestUrl: string): HttpResponse<unknown> | undefined {
+  getResponse(requestUrl: string): [HttpResponse<unknown>, Date] | undefined {
     return this.cachedResponses.get(requestUrl);
   }
 
-  addResponse(url: string, response: HttpResponse<unknown>): void {
-    this.cachedResponses.set(url, response);
+  addResponse(requestUrl: string, response: HttpResponse<unknown>, timestamp: Date): void {
+    this.cachedResponses.set(requestUrl, [response, timestamp]);
   }
 
-  clearCache(): void {
-    this.cachedResponses.clear();
+  clearResponse(requestUrl: string): void {
+    this.cachedResponses.delete(requestUrl);
   }
 }
