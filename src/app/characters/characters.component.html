@@ -1,68 +1,86 @@
 <div data-cy="characters">
+  <header>
+    <h2>Star Wars Characters</h2>
+  </header>
 
-    <header>
-        <h2>Star Wars Characters</h2>
-    </header>
-
-    <section data-cy="searchView">
-        <h3>Search characters by name</h3>
-        <app-search-form [apiType]="'people'" (selectedItemEvent)="getSelectedCharacter($event)"></app-search-form>
+  <section data-cy="searchView">
+    <h3>Search characters by name</h3>
+    <app-search-form
+      [apiType]="'people'"
+      (selectedItemChange)="getSelectedCharacter($event)"
+    ></app-search-form>
+  </section>
+  @if (showAllCharacters) {
+    <section class="details-section all" data-cy="listView">
+      <div>
+        <div>
+          <h3>Characters</h3>
+          @if (!isLoading) {
+            <p>Click on a character to view their details</p>
+            <ul>
+              @for (person of allCharacters; track person.name) {
+                <li>
+                  <button
+                    class="view-detais"
+                    (click)="getCharacterDetails(person.url)"
+                    title="See character details"
+                  >
+                    {{ person.name }}
+                  </button>
+                </li>
+              }
+            </ul>
+          } @else {
+            <div class="is-loading">Loading...</div>
+          }
+        </div>
+      </div>
     </section>
-
-    <div class="view-all-container" *ngIf="!showAllCharacters || selectedCharacter">
-        <button (click)="getCharacters()" class="view-all">View all characters <span>></span></button>
+  } @else {
+    <div class="view-all-container">
+      <button (click)="getCharacters()" class="view-all">
+        View all characters <span>></span>
+      </button>
     </div>
-
-    <section class="details-section all" *ngIf="showAllCharacters && !selectedCharacter" data-cy="listView">
+    <section class="details-section" data-cy="detailsView">
+      <div>
         <div>
-            <div>
-                <h3>Characters</h3>
-                @if (!isLoading){
-                <p>Click on a character to view their details</p>
-                <ul>
-                    <li *ngFor="let person of allCharacters;">
-                        <button class="view-detais" (click)="getCharacterDetails(person.url)"
-                            title="See character details">{{person.name}}</button>
-                    </li>
-                </ul>
-                }
-                @else {
-                <div class="is-loading">Loading...</div>
-                }
-            </div>
+          <h3>Character details</h3>
+          @if (!isLoading) {
+            <p>Name: {{ selectedCharacter?.name }}</p>
+            <p>
+              Planet:
+              <span
+                class="view-detais"
+                routerLink="/planets"
+                [state]="{ selected: selectedCharacter?.homeworld }"
+                title="Explore planet"
+                >{{ selectedPlanetName }}</span
+              >
+            </p>
+            <ul>
+              @for (
+                starship of selectedCharacter?.starships;
+                track starship;
+                let index = $index
+              ) {
+                <li>
+                  <span
+                    class="view-detais"
+                    routerLink="/starships"
+                    [state]="{ selected: starship }"
+                    title="Explore starship"
+                  >
+                    Starship {{ index + 1 }}
+                  </span>
+                </li>
+              }
+            </ul>
+          } @else {
+            <div class="is-loading">Loading...</div>
+          }
         </div>
+      </div>
     </section>
-
-    <section class="details-section" *ngIf="selectedCharacter" data-cy="detailsView">
-        <div>
-            <div>
-                <h3>Character details</h3>
-                @if (!isLoading){
-                <p>Name: {{selectedCharacter!.name}}</p>
-                <p>Planet:
-                    <span
-                        class="view-detais"
-                        routerLink="/planets"
-                        [state]="{'selected': selectedCharacter!.homeworld}"
-                        title="Explore planet">{{selectedPlanetName}}</span>
-                </p>
-                <ul>
-                    <li *ngFor="let starship of selectedCharacter!.starships;  let ind = index">
-                        <span
-                            class="view-detais"
-                            routerLink="/starships"
-                            [state]="{'selected': starship}"
-                            title="Explore starship">
-                            Starship {{ind + 1}}
-                        </span>
-                    </li>
-                </ul>
-                }
-                @else {
-                <div class="is-loading">Loading...</div>
-                }
-            </div>
-        </div>
-    </section>
-
+  }
 </div>

@@ -60,7 +60,7 @@ describe('Caching interceptor function', () => {
     it(`should cache HTTP 'GET' requests`, () => {
         starwarsApiService.getResource(apiUrl).subscribe({
             next: (response) => {
-                expect(response).toBeTruthy;
+                expect(response).toBeTruthy();
             }
         });
 

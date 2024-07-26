@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { StarwarsApiService } from './starwars-api.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Person } from '../models/swapi';
 
 describe('StarwarsApiService', () => {
@@ -10,9 +10,9 @@ describe('StarwarsApiService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [StarwarsApiService]
-    });
+    imports: [],
+    providers: [StarwarsApiService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
     TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
     starwarsApiService = TestBed.inject(StarwarsApiService);

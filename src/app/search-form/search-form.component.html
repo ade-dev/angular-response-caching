@@ -1,28 +1,33 @@
 <form class="search-form">
-    <mat-form-field class="search-form-field" appearance="fill">
-        <mat-label>Search</mat-label>
-        <input
-            type="text"
-            aria-label="Search characters"
-            matInput
-            [formControl]="searchInput"
-            [matAutocomplete]="characters" data-cy="searchInput" />
+  <mat-form-field class="search-form-field" appearance="fill">
+    <mat-label>Search</mat-label>
+    <input
+      type="text"
+      aria-label="Search characters"
+      matInput
+      [formControl]="searchInput"
+      [matAutocomplete]="characters"
+      data-cy="searchInput"
+    />
 
-        <mat-autocomplete autoActiveFirstOption #characters="matAutocomplete">
-            <mat-option *ngIf="searchService.isLoading && searchInput.value !==''">Loading...</mat-option>
-            <mat-option
-                *ngIf="
-                !searchService.isResults && 
-                !searchService.isLoading && 
-                searchInput.value !== ''">No results for your search
-            </mat-option>
-            @if (searchService.isResults && searchInput.value !==''){
-            <mat-option
-                *ngFor="let character of searchService.searchResult"
-                [value]="character.name" (onSelectionChange)="getSelectedItem(character)">
-                {{character?.name}}
-            </mat-option>
-            }
-        </mat-autocomplete>
-    </mat-form-field>
+    <mat-autocomplete autoActiveFirstOption #characters="matAutocomplete">
+      @if (searchService.isLoading) {
+        <mat-option>Loading...</mat-option>
+      }
+
+      @if (searchService.isResults) {
+        @for (character of searchService.searchResult; track character.name) {
+          <mat-option
+            [value]="character.name"
+            (onSelectionChange)="getSelectedItem(character)"
+          >
+            {{ character?.name }}
+          </mat-option>
+        }
+      }
+      @if (searchService.noResults) {
+        <mat-option>Your search returned no results.</mat-option>
+      }
+    </mat-autocomplete>
+  </mat-form-field>
 </form>

@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/star-wars'),
+      dir: require('path').join(__dirname, './coverage/angular-response-caching'),
       subdir: '.',
       reporters: [
         { type: 'html' },

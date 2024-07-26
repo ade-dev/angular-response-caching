@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, expand, reduce, EMPTY, map } from 'rxjs';
 import { Swapi, Stage, Person, Planet, Starship } from '../models/swapi';
@@ -7,11 +7,10 @@ import { Swapi, Stage, Person, Planet, Starship } from '../models/swapi';
 @Injectable({
   providedIn: 'root'
 })
+
 export class StarwarsApiService {
 
-  constructor(
-    private httpClient: HttpClient
-  ) { }
+  private httpClient = inject(HttpClient);
 
   public baseUrl = 'https://swapi.dev/api/';
 

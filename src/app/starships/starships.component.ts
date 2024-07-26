@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
 import { StarwarsApiService } from '../services/starwars-api.service';
 import { SearchFormComponent } from '../search-form/search-form.component';
 import { Stage, Starship } from '../models/swapi';
@@ -8,17 +7,14 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-starships',
   standalone: true,
-  imports: [CommonModule, RouterLink, SearchFormComponent],
+  imports: [RouterLink, SearchFormComponent],
   templateUrl: './starships.component.html',
   styleUrls: ['./starships.component.css']
 })
 export class StarshipsComponent implements OnInit {
 
-  constructor(
-    private starwarsApiService: StarwarsApiService
-  ) { }
+  private starwarsApiService = inject(StarwarsApiService);
 
-  starshipList: Starship[] = [];
   allStarships: Starship[] = [];
   selectedStarship: Starship | null = null;
   selectedStarshipName = '';
@@ -48,11 +44,17 @@ export class StarshipsComponent implements OnInit {
     this.showAllStarships = false;
   }
 
-  getSelectedStarship(item: Stage) {
+  getSelectedStarship(item?: Stage) {
+    this.showAllStarships = false;
     this.selectedStarship = item as Starship;
   }
 
   ngOnInit(): void {
-    history.state && history.state.selected ? this.getStarshipDetails(history.state.selected) : this.getStarships();
+    if (history.state && history.state.selected) {
+      this.getStarshipDetails(history.state.selected);
+    }
+    else {
+      this.getStarships();
+    }
   }
 }

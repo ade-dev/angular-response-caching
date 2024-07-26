@@ -1,27 +1,32 @@
-# A demo Angular application – App consumes the Star Wars API (SWAPI)
+# Angular HTTP response caching demo application
 
-## Developer: [Ade Oyebadejo](https://www.clade.co.uk)
+An Angular application that demonstrates HTTP response caching. The application consumes a Star Wars API (SWAPI) to present dashboards and search functionalities for characters, planets and spaceships. Unit tests are implemented using Jasmine and Karma with E2E tests executed via Cypress.
 
-A demo Angular application which consumes a Star Wars API (SWAPI) to present dashboards and search functionalities for characters, planets and spaceships. Unit tests are implemented using Jasmine and Karma with E2E tests executed via Cypress
+See article at: https://clade.co.uk/angular-response-caching
 
-This application is built with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0 and Angular Material version 16.2.5
+### Developer: [Ade Oyebadejo](https://www.clade.co.uk)
+
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3.
+
 - The project has been updated to Angular and Angular Material versions 17 - Using Node v18.13.0
+- The project has been updated to Angular and Angular Material versions 18 - Using Node v22.0.0
 
-## Clone the repo
+## How to run application locally
 
-Run `git clone https://github.com/ade-dev/star-wars.git`
+```bash
+# Clone the repository
+git clone https://github.com/ade-dev/angular-response-caching.git
 
-## Navigate to the project folder
+# Navigate to the app's root directory
+cd angular-response-caching
 
-`cd star-wars`
+# Install the dependencies
+npm install
 
-## Install dependencies
+# Run the application
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files
 
-Run `npm install`
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+```
 
 ## Code scaffolding
 
@@ -41,4 +46,4 @@ Run `ng e2e` to execute end-to-end tests via Cypress.
 
 ## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

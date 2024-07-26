@@ -22,6 +22,7 @@ describe('SearchFormComponent', () => {
 
     fixture = TestBed.createComponent(SearchFormComponent);
     searchFormComponent = fixture.componentInstance;
+    fixture.componentRef.setInput('apiType', 'people');
     fixture.detectChanges();
   });
 

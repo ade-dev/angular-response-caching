@@ -30,8 +30,8 @@ describe('AppComponent', () => {
     expect(appComponent).toBeTruthy();
   });
 
-  it(`should have the title 'Star Wars'`, () => {
-    expect(appComponent.title).toEqual('Star Wars');
+  it(`should have the title 'Angular HTTP response caching'`, () => {
+    expect(appComponent.title).toEqual('Angular HTTP response caching');
   });
 
   it('should have RouterLinks', () => {

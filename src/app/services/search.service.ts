@@ -1,31 +1,33 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { filter, debounceTime, switchMap, tap, Subscription } from 'rxjs';
+import { Subscription, debounceTime, map, distinctUntilChanged, tap, filter, switchMap } from 'rxjs';
 import { StarwarsApiService } from '../services/starwars-api.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 
 export class SearchService<T> {
 
-  constructor(
-    private starwarsApiService: StarwarsApiService
-  ) { }
+  private starwarsApiService = inject(StarwarsApiService);
 
   searchResult: T[] = [];
-  subsribeSearch!: Subscription;
+  subscribeSearch!: Subscription;
   isLoading = false;
-  isResults = true;
+  isResults = false;
+  noResults = false;
 
   search(searchInput: FormControl<string | null>, searchType: string) {
-    this.subsribeSearch = searchInput.valueChanges.pipe(
-      tap(() => {
-        this.isLoading = true;
+    this.subscribeSearch = searchInput.valueChanges.pipe(
+      debounceTime(200),
+      map(value => value!.trim()),
+      distinctUntilChanged(),
+      tap((value) => {
+        if (value.length > 0) { this.isLoading = true; }
         this.isResults = false;
+        this.noResults = false;
       }),
-      filter(value => {
-        return value !== null && value.trim() !== '';
-      }),
-      debounceTime(1000),
+      filter((value) => value !== null && value !== ''),
       switchMap(value => this.starwarsApiService.searchResources(searchType, value))
     )
       .subscribe({
@@ -36,7 +38,7 @@ export class SearchService<T> {
             this.isResults = true;
           }
           else {
-            this.isResults = false;
+            this.noResults = true;
           }
         },
         error: (error) => (
@@ -44,8 +46,7 @@ export class SearchService<T> {
         )
       });
   }
-
   unsubscribeSearch() {
-    this.subsribeSearch.unsubscribe();
+    this.subscribeSearch.unsubscribe();
   }
 }

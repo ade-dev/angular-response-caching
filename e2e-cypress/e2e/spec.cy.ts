@@ -37,6 +37,7 @@ describe('Starwars dashboards', () => {
 
         it(`should display a list of ${screen.selector} when 'View all ${screen.selector}' link is followed`, function() {
           cy.contains(this['data'].list[0].name).click();
+          cy.get("[data-cy='detailsView']").should('be.visible');
           cy.contains(`View all ${screen.selector}`).click();
           cy.get("[data-cy='listView']").should('be.visible')
             .should('contain', this['data'].listHeading)
@@ -53,9 +54,9 @@ describe('Starwars dashboards', () => {
       });
 
       context(`Search ${screen.selector} by name`, function() {
-        it(`should display 'No results for your search', when there are no search results`, () => {
+        it(`should display no results message, when there are no search results`, () => {
           cy.get(`[data-cy="${screen.selector}"]`).find('input').type("abc")
-            .get('mat-option').contains('No results for your search').should('be.visible');
+            .get('mat-option').contains('Your search returned no results.').should('be.visible');
         });
 
         it(`should execute a search of ${screen.selector} and display details of a selected ${screen.attributes[0]}`, function() {

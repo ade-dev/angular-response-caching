@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject, input, model } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
@@ -9,28 +8,25 @@ import { Stage } from '../models/swapi';
 @Component({
   selector: 'app-search-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatAutocompleteModule, MatInputModule],
+  imports: [ReactiveFormsModule, MatAutocompleteModule, MatInputModule],
   templateUrl: './search-form.component.html',
-  styleUrl: './search-form.component.css',
-  providers: [SearchService]
+  styleUrl: './search-form.component.css'
 })
 
 export class SearchFormComponent implements OnInit {
 
-  constructor(
-    public searchService: SearchService<Stage>
-  ) { }
+  public searchService = inject(SearchService<Stage>);
 
-  @Input() apiType: string = '';
-  @Output() selectedItemEvent = new EventEmitter<Stage>();
+  apiType = input.required<string>();
+  selectedItem = model<Stage>();
 
   searchInput = new FormControl<string | null>(null);
 
   getSelectedItem(item: Stage) {
-    this.selectedItemEvent.emit(item);
+    this.selectedItem.set(item);
   }
 
   ngOnInit(): void {
-    this.searchService.search(this.searchInput, this.apiType);
+    this.searchService.search(this.searchInput, this.apiType());
   }
 }

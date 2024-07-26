@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
 import { StarwarsApiService } from '../services/starwars-api.service';
 import { SearchFormComponent } from '../search-form/search-form.component';
 import { Stage, Planet } from '../models/swapi';
@@ -8,17 +7,14 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-planets',
   standalone: true,
-  imports: [CommonModule, RouterLink, SearchFormComponent],
+  imports: [RouterLink, SearchFormComponent],
   templateUrl: './planets.component.html',
   styleUrls: ['./planets.component.css']
 })
 export class PlanetsComponent implements OnInit {
 
-  constructor(
-    private starwarsApiService: StarwarsApiService
-  ) { }
+  private starwarsApiService = inject(StarwarsApiService);
 
-  planetList: Planet[] = [];
   allPlanets: Planet[] = [];
   selectedPlanet: Planet | null = null;
   selectedPlanetName = '';
@@ -48,11 +44,17 @@ export class PlanetsComponent implements OnInit {
     this.showAllPlanets = false;
   }
 
-  getSelectedPlanet(item: Stage) {
+  getSelectedPlanet(item?: Stage) {
+    this.showAllPlanets = false;
     this.selectedPlanet = item as Planet;
   }
 
   ngOnInit(): void {
-    history.state && history.state.selected ? this.getPlanetDetails(history.state.selected) : this.getPlanets();
+    if (history.state && history.state.selected) {
+      this.getPlanetDetails(history.state.selected);
+    }
+    else {
+      this.getPlanets();
+    }
   }
 }

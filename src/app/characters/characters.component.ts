@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
 import { StarwarsApiService } from '../services/starwars-api.service';
 import { SearchFormComponent } from '../search-form/search-form.component';
 import { Stage, Planet, Person } from '../models/swapi';
@@ -8,15 +7,13 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-characters',
   standalone: true,
-  imports: [CommonModule, RouterLink, SearchFormComponent],
+  imports: [RouterLink, SearchFormComponent],
   templateUrl: './characters.component.html',
   styleUrls: ['./characters.component.css']
 })
 export class CharactersComponent implements OnInit {
 
-  constructor(
-    private starwarsApiService: StarwarsApiService
-  ) { }
+  private starwarsApiService = inject(StarwarsApiService);
 
   allCharacters!: Person[];
   selectedCharacter: Person | null = null;
@@ -55,12 +52,17 @@ export class CharactersComponent implements OnInit {
     this.getCharacter(selectedPerson);
   }
 
-  getSelectedCharacter(item: Stage) {
+  getSelectedCharacter(item?: Stage) {
     const selectedCharacter = item as Person;
     this.getCharacterDetails(selectedCharacter.url);
   }
 
   ngOnInit(): void {
-    history.state && history.state.selected ? this.getCharacterDetails(history.state.selected) : this.getCharacters();
+    if (history.state && history.state.selected) {
+      this.getCharacterDetails(history.state.selected);
+    }
+    else {
+      this.getCharacters();
+    }
   }
 }

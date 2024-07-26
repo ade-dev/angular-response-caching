@@ -1,61 +1,76 @@
 <div data-cy="planets">
+  <header>
+    <h2>Star Wars Planets</h2>
+  </header>
 
-    <header>
-        <h2>Star Wars Planets</h2>
-    </header>
-
-    <section data-cy="searchView">
-        <h3>Search planets by name</h3>
-        <app-search-form [apiType]="'planets'" (selectedItemEvent)="getSelectedPlanet($event)"></app-search-form>
+  <section data-cy="searchView">
+    <h3>Search planets by name</h3>
+    <app-search-form
+      [apiType]="'planets'"
+      (selectedItemChange)="getSelectedPlanet($event)"
+    ></app-search-form>
+  </section>
+  @if (showAllPlanets) {
+    <section class="details-section all" data-cy="listView">
+      <div>
+        <div>
+          <h3>Planets</h3>
+          @if (!isLoading) {
+            <p>Click on a planet to explore it</p>
+            <ul>
+              @for (planet of allPlanets; track planet.name) {
+                <li>
+                  <button
+                    class="view-detais"
+                    (click)="getPlanetDetails(planet.url)"
+                    title="Explore planet"
+                  >
+                    {{ planet.name }}
+                  </button>
+                </li>
+              }
+            </ul>
+          } @else {
+            <div class="is-loading">Loading...</div>
+          }
+        </div>
+      </div>
     </section>
-
-    <div class="view-all-container" *ngIf="!showAllPlanets || selectedPlanet">
-        <button (click)="getPlanets()" class="view-all">View all planets <span>></span></button>
+  } @else {
+    <div class="view-all-container">
+      <button (click)="getPlanets()" class="view-all">
+        View all planets <span>></span>
+      </button>
     </div>
-
-    <section class="details-section all" *ngIf="showAllPlanets && !selectedPlanet" data-cy="listView">
+    <section class="details-section" data-cy="detailsView">
+      <div>
         <div>
-            <div>
-                <h3>Planets</h3>
-                @if (!isLoading){
-                <p>Click on a planet to explore it</p>
-                <ul>
-                    <li *ngFor="let planet of allPlanets;">
-                        <button class="view-detais" (click)="getPlanetDetails(planet.url)"
-                            title="Explore planet">{{planet.name}}</button>
-                    </li>
-                </ul>
-                }
-                @else {
-                <div class="is-loading">Loading...</div>
-                }
-            </div>
+          <h3>Planet details</h3>
+          @if (!isLoading) {
+            <p>Name: {{ selectedPlanet?.name }}</p>
+            <p>Population: {{ selectedPlanet?.population }}</p>
+            <ul>
+              @for (
+                resident of selectedPlanet?.residents;
+                track resident;
+                let index = $index
+              ) {
+                <li>
+                  <span
+                    class="view-detais"
+                    title="View resident's details"
+                    routerLink="/characters"
+                    [state]="{ selected: resident }"
+                    >Resident {{ index + 1 }}
+                  </span>
+                </li>
+              }
+            </ul>
+          } @else {
+            <div class="is-loading">Loading...</div>
+          }
         </div>
+      </div>
     </section>
-
-    <section class="details-section" *ngIf="selectedPlanet" data-cy="detailsView">
-        <div>
-            <div>
-                <h3>Planet details</h3>
-                @if (!isLoading){
-                <p>Name: {{selectedPlanet.name}}</p>
-                <p>Population: {{selectedPlanet.population}}</p>
-                <ul>
-                    <li *ngFor="let resident of selectedPlanet.residents;  let ind = index">
-                        <span
-                            class="view-detais"
-                            title="View resident's details"
-                            routerLink="/characters"
-                            [state]="{'selected': resident}">Resident {{ind + 1}}
-                        </span>
-                    </li>
-                </ul>
-                }
-                @else {
-                <div class="is-loading">Loading...</div>
-                }
-            </div>
-        </div>
-    </section>
-
+  }
 </div>

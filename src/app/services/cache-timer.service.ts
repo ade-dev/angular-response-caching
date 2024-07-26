@@ -13,8 +13,8 @@ export class CacheTimerService {
 
   isExpired(timestamp: Date): boolean {
     const timeNow = new Date().getTime();
-    const durationInMillis = this.durationInMins * 60 * 1000;
-    const expiryTime = timestamp.getTime() + durationInMillis;
+    const duration = this.durationInMins * 60 * 1000;
+    const expiryTime = timestamp.getTime() + duration;
     return (expiryTime > timeNow) ? false : true;
   }
 }
